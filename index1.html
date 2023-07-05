@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tayyaba Noor2</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .card {
+      margin-bottom: 20px;
+    }
+
+    .navbar .nav-item {
+      width: 100%;
+    }
+
+    .navbar .navbar-toggler {
+      order: 1;
+      margin-left: auto;
+    }
+
+    .navbar .collapse.show .nav-link {
+      text-align: center;
+    }
+    body {
+      background-color: lightblue;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Registration</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Record</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+  </header>
+  
+  <main class="container">
+    <div class="row" id="apiData"></div>
+  </main>
+  
+  <footer class="bg-dark text-white text-center py-4">
+    <p>My News Website</p>
+    <p>Quick Links</p>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Recommendations</a></li>
+      <li><a href="#">Guides</a></li>
+    </ul>
+    <p>2021-2022 My News Website. All rights reserved.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", fetchData);
+
+    async function fetchData() {
+      try {
+        const apiKey = "4691fd98b4f1489cae40f7b79ebfb179";
+        const apiUrl = `https://newsapi.org/v2/everything?q=tesla&from=2023-06-05&sortBy=publishedAt&apiKey=f7d54802ae9d4e2eb6b90d6e456b63ee`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        displayData(data);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    }
+
+    function displayData(data) {
+      const apiDataContainer = document.getElementById("apiData");
+      let html = "";
+
+      data.articles.forEach((item, index) => {
+        if (index % 2 === 0) {
+          html += '<div class="w-100 d-sm-block d-md-none"></div>'; // Add a new row for every second card on small devices
+          html += '<div class="w-100 d-none d-md-block d-lg-none"></div>'; // Add a new row for every second card on medium devices
+          html += '<div class="w-100 d-none d-lg-block d-xl-none"></div>'; // Add a new row for every second card on large devices
+          html += '<div class="w-100 d-none d-xl-block"></div>'; // Add a new row for every second card on extra-large devices
+        }
+
+        html += `
+          <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">${item.title}</h5>
+                <p class="card-text">${item.description}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      apiDataContainer.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
